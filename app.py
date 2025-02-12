@@ -3,6 +3,7 @@
 from flask import Flask, request, render_template
 from models import Artist, Album, Song, db
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///music.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -17,7 +18,7 @@ def songs():
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!'
+    return render_template('base.html')
 @app.route('/about')
 def about():
     return render_template('about.html')
