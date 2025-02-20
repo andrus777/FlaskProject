@@ -2,23 +2,32 @@
 
 from flask import Flask, request, render_template
 from models import Artist, Album, Song, db
+import pymysql
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///music.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # связываем приложение и экземпляр SQLAlchemy
 db.init_app(app)
 
+
+
+@app.route('/')
+def index():  # put application's code here
+    return render_template('base.html')
+
+@app.route('/game')
+def game():  # put application's code here
+    return render_template('game.html')
+
 @app.route('/songs')
 def songs():
     songs_list = Song.query.all()
     return render_template('songs.html', songs=songs_list)
 
-@app.route('/')
-def hello_world():  # put application's code here
-    return render_template('base.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')
