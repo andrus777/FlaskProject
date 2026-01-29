@@ -8,11 +8,10 @@
     <!-- Левое меню -->
     <aside class="sidebar" id="sidebar" aria-label="Левое боковое меню">
         <div class="p-3">
-            <h4 class="text-muted">EIS</h4>
+            <h4 class="text-muted">АДМИНИСТРИРОВАНИЕ</h4>
             <nav class="nav flex-column">
-                <a class="nav-link" href="#" onclick="sendRequest('/eis/about_eis', '#mainContent','')">О системе</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/eis/projects', '#mainContent','')">ЕИС-проекты</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/eis/store', '#mainContent','')">Остатки на складе</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/adminp/about', '#mainContent')">О системе</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/adminp/update', '#mainContent')">Обновление данных</a>
             </nav>
             <hr />
             <!--
@@ -23,17 +22,16 @@
 
     <!-- Контент -->
     <main class="content" id="mainContent" tabindex="0" role="main">
-<div class="container-fluid">
+        <div class="container-fluid">
 <div id="storecontent">
                 <h1>Информационная система коммерческой службы</h1>
-                <p class="lead">Равздел EIS - сведения о проектах и изданиях</p>
+                <p class="lead">Раздел Администрирование - НИЧЕГО НЕ НАЖИМАТЬ!!!</p>
 
                 <p class="lead">Краткое описание пунктов меню:</p>
                 <ul>
-                  <li>О системе: краткое описание функционала блока</li>
-                  <li>ЕИС-проекты: сведения о проектах и изданиях. В верхней таблице можно в поисковом поле вводить часть названия/ Автора/ код проекта,
-                      и получить список подходящих проектов. При щелчке указателем мыши на интересующий проект в нижней таблице появляется список его изданий</li>
-                  <li>Остатки на складе: таблица с перечнем позиций на складе и текущими остатками. Фильтр через поле "Поиск" - вводить для поиска можно любые сведения о номенклатуре, имеющиеса в таблице</li>
+                  <li><b>Администрирование:</b> </li>
+                  <li><b>О системе:</b> работа с обновлениями баз</li>
+                  <li><b>Обновление данных:</b> задачи по оптимизации данных</li>
                 </ul>
 
                 <br>
@@ -57,4 +55,6 @@
 </div>
     </main>
 </div>
+
+
 {% endblock %}

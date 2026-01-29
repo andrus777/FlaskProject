@@ -1,6 +1,8 @@
 # https://proglib.io/p/samouchitel-po-python-dlya-nachinayushchih-chast-23-osnovy-veb-razrabotki-na-flask-2023-06-27
 
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from paste.auth import form
 
 from flask.cli import ScriptInfo
@@ -14,19 +16,80 @@ from update_util import *
 
 
 
-
 app = Flask(__name__, static_folder="static")
+app.secret_key = 'your-secret-key-here'
+
+# Настройка Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'index'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///music.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # связываем приложение и экземпляр SQLAlchemy
 db.init_app(app)
 
+# Пример пользователя (в реальном приложении используйте БД)
+USERS = {
+    'admin': {
+        'password_hash': generate_password_hash('adminpass'),
+        'is_admin': True
+    },
+    'user': {
+        'password_hash': generate_password_hash('userpass'),
+        'is_admin': False
+    }
+}
+
+class User(UserMixin):
+    def __init__(self, username, is_admin):
+        self.id = username
+        self.username = username
+        self.is_admin = is_admin
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id in USERS:
+        return User(user_id, USERS[user_id]['is_admin'])
+    return None
+
+
 
 
 @app.route('/')
 def index():  # put application's code here
     return render_template('base_new.html')
+
+@app.route('/adminp/<admcode>', methods=['GET','POST'])
+def adminp(admcode):
+    print("Код в url: ", admcode)
+
+    if admcode == 'main':
+        return render_template('admin_main.html')
+    elif admcode == 'about':
+        return render_template('admin_about.html')
+    elif admcode == 'update':
+        # 1. Получаем JSON из запроса
+        data = request.get_json()
+        print('data: ', data)
+        if len(data['tbname']) > 1:
+            table_name = data['tbname']
+            print(f"Начинаем обновление таблицы: {table_name}")
+            start_update_tbl(table_name)
+
+        con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
+                                      database='sppr')
+        cursor = con.cursor()
+        sql_txt = "SELECT * FROM sppr.svs_update_info;"
+        cursor.execute(sql_txt)
+        results = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return render_template('admin_update.html', results=results)
+
+    else:
+        pass  # Заглушка для будущей реализации
 
 @app.route('/update', methods=['GET','POST'])
 def update():  # put application's code here
@@ -58,7 +121,7 @@ def eis(prcode):
                                       database='sppr')
 
         cursor = con.cursor()
-        sql_txt = "SELECT *  FROM sppr.view_store_counts;"
+        sql_txt = "SELECT *  FROM sppr.view_store_counts_new;"
         cursor.execute(sql_txt)
         results = cursor.fetchall()
         cursor.close()
@@ -353,7 +416,7 @@ def user_profile(username):
     return f"Это профиль пользователя {username}"
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']

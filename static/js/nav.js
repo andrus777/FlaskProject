@@ -1,11 +1,16 @@
 // Функция для отправки запроса
-function sendRequest(url, sect) {
+function sendRequest(url, sect, dataSend = '') {
+    const dataToSend = {"tbname": dataSend.toString() };
+    //alert(JSON.stringify(dataToSend) + " ---- " + dataToSend);
 
-    $(sect).html('<img src="/static/loading.gif" alt="Изображение">');
+
+    $(sect).html('<img src="/static/pre_loader_3.gif" alt="Изображение" style="text-align: center;">');
 //alert(sect+ "  " + $(sect).html());
     $.ajax({
         type: 'POST',
         url: url,
+        data: JSON.stringify(dataToSend),
+        contentType: 'application/json',  // важно добавить этот заголовок!
         success: function (response) {
             // Вставляем полученный HTML в контейнер
             //alert(response);
@@ -22,6 +27,10 @@ function sendRequest(url, sect) {
 
             if (url=="/eis/project/"){
                 $('#myModal').modal('show');
+            }
+
+             if (url == "adminp/update_table") {
+                initStoreHandlers();
             }
         },
         error: function (error) {
@@ -121,27 +130,10 @@ function initAdditionalHandlers() {
             const description = currentRow.cells[2].innerText;
             const status = currentRow.cells[3].innerText;
 
-            // Добавляем выделение
-            //currentRow.classList.add('highlight');
-
             // Подгружаем данные во вторую таблицу
             sendRequest('/eis_ext/' + id, '#selectedTable')
         }
     });
-
-    // Функция фильтрации
-    // const filterTable = () => {
-    //     const filterValue = filterInput.value.toLowerCase();
-    // Обработка клавиш
-    //     if(filterValue.length > 3) {
-    //        sendRequest('/store_count/' + filterValue, '#mainTable')
-    //     }
-    //  };
-
-    // Обработчик ввода в поле фильтра
-    // filterInput.addEventListener('input', filterTable);
-
-
 }
 
 
@@ -159,6 +151,27 @@ myModal.addEventListener('show.bs.modal', function() {
 myModal.addEventListener('hidden.bs.modal', function() {
  // Действия при закрытии
 });
+
+
+function update_adm(tableName) {
+    // Создаем объект XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+
+    // Настраиваем запрос (метод POST, URL сервера, асинхронный режим)
+    xhr.open('POST', 'adminp/update_table', true);
+
+    // Устанавливаем заголовок Content-Type для передачи данных в формате JSON
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Отправляем запрос без ожидания ответа
+    xhr.send(JSON.stringify({ tableName: tableName }));
+
+    // Можно добавить минимальную обратную связь для пользователя
+    console.log(`Отправлен запрос на обновление таблицы: ${tableName}`);
+}
+
+
+
 
 
 
