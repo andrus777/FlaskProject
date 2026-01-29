@@ -1,0 +1,98 @@
+{% extends 'base_new.html' %}
+
+{% block title %}Склад{% endblock %}
+
+{% block content %}
+    <!-- Блок 2: слева — боковое меню, справа — контент (фиксирован под заголовком) -->
+<div id="block2" aria-label="Блок под заголовком">
+    <!-- Левое меню -->
+    <aside class="sidebar" id="sidebar" aria-label="Левое боковое меню">
+        <div class="p-3">
+            <h6 class="text-muted">Обработка заказов</h6>
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#">Электронная библиотека</a>
+                <a class="nav-link" href="#">Заказ из 1С</a>
+                <a class="nav-link" href="#">Заказ по кодам</a>
+
+                <a class="nav-link" data-bs-toggle="collapse" href="#lec1" role="button" aria-expanded="false" aria-controls="lec1">Заказ из 1С</a>
+                <div class="collapse ps-3" id="lec1">
+                    <a class="nav-link small" href="#">Цели</a>
+                    <a class="nav-link small" href="#">Связи</a>
+                </div>
+
+                <a class="nav-link" data-bs-toggle="collapse" href="#lec2" role="button" aria-expanded="false" aria-controls="lec2">2. Кристалл. строение</a>
+                <div class="collapse ps-3" id="lec2">
+                    <a class="nav-link small" href="#">Решётки</a>
+                    <a class="nav-link small" href="#">Дефекты</a>
+                </div>
+
+
+            </nav>
+
+            <hr />
+            <div class="small text-muted">Документация и инструкции</div>
+        </div>
+    </aside>
+
+    <!-- Контент -->
+    <main class="content" id="mainContent" tabindex="0" role="main">
+        <div class="container-fluid">
+            <div class="rendered-form">
+    <div class="">
+        <h1 access="false" id="control-3913310">Обработка заказа</h1></div>
+    <div class="formbuilder-checkbox-group form-group field-checkbox-group-par">
+        <label for="checkbox-group-par" class="formbuilder-checkbox-group-label">Параметры обработки</label>
+        <div class="checkbox-group">
+            <div class="formbuilder-checkbox">
+                <input name="checkbox-group-par[]" access="false" id="checkbox-group-par-0" value="option-1" type="checkbox" checked="checked">
+                <label for="checkbox-group-par-0">Дата окончания авторских договоров</label>
+            </div>
+            <div class="formbuilder-checkbox">
+                <input name="checkbox-group-par[]" access="false" id="checkbox-group-par-1" value="option-2" type="checkbox" checked="checked">
+                <label for="checkbox-group-par-1">Дата планируемой отгрузки</label>
+            </div>
+            <div class="formbuilder-checkbox">
+                <input name="checkbox-group-par[]" access="false" id="checkbox-group-par-2" value="option-3" type="checkbox" checked="checked">
+                <label for="checkbox-group-par-2">Ограничение по годам</label>
+            </div>
+        </div>
+    </div>
+    <div class="formbuilder-date form-group field-date-1747820789193">
+        <label for="date-1747820789193" class="formbuilder-date-label">Дата окончания авторских договоров</label>
+        <input type="date" class="form-control" name="date-1747820789193" access="false" id="date-1747820789193">
+    </div>
+    <div class="formbuilder-date form-group field-date-1747820526234">
+        <label for="date-1747820526234" class="formbuilder-date-label">Планируемая дата отгрузки</label>
+        <input type="date" class="form-control" name="date-1747820526234" access="false" id="date-1747820526234">
+    </div>
+    <div class="formbuilder-select form-group field-select-1747820491003">
+        <label for="select-1747820491003" class="formbuilder-select-label">Предпочтение по годам изданий</label>
+        <select class="form-control" name="select-1747820491003[]" multiple="true" id="select-1747820491003" size="5">
+            <option value="option-1" selected="true" id="select-1747820491003-0">2025</option>
+            <option value="option-2" id="select-1747820491003-1">2024</option>
+            <option value="option-3" id="select-1747820491003-2">2023</option>
+            <option value="option-4" id="select-1747820491003-3">2022</option>
+            <option value="option-5" id="select-1747820491003-4">ранее 2022</option>
+        </select>
+    </div>
+    <div class="formbuilder-textarea form-group field-textarea-1747820476136">
+        <label for="textarea-1747820476136" class="formbuilder-textarea-label">Вставьте список в виде: [Издание] пробел [Количество] пробел [Цена(необязательно)]&nbsp;
+            <div>Пример:&nbsp;</div>
+            <div>101123451 50</div>
+            <div>101123452 100</div>
+            <div>101123444 40</div>
+            <div>101121931 25</div><span class="formbuilder-required">*</span></label>
+        <textarea type="textarea" class="form-control" name="textarea-1747820476136" access="false" rows="15" id="textarea-1747820476136" required="required" aria-required="true"></textarea>
+    </div>
+    <div class="formbuilder-button form-group field-button-1747823235429">
+        <button type="submit" class="btn-default btn" name="button-sub"  style="default" id="button-1747823235429">Анализировать</button>
+    </div>
+</div>
+
+
+        </div>
+    </main>
+</div>
+
+
+{% endblock %}

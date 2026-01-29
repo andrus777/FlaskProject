@@ -1,0 +1,70 @@
+ <thead class="thead-dark">
+         <tr>
+             <th>Полный_номер</th>
+             <th>Вид</th>
+             <th>Название</th>
+             <th>Год</th>
+             <th>Статус</th>
+             <th>ISBN</th>
+             <th>Тираж</th>
+             <th>В_наличии</th>
+             <th>Отгружается</th>
+             <th>В_резерве</th>
+             <th>Доступно</th>
+             <th>Дата (подп.печ.)</th>
+             <th>Дата ТП</th>
+             <th>Дата (отпр. печ.)</th>
+             <th>Дата (пост. склад)</th>
+             <th>Стандарт</th>
+             <th>прод_2023</th>
+             <th>прод_2025</th>
+             <th>прод_2025</th>
+             <th>прод_2026</th>
+             <th>№_договора</th>
+             <th>Дата_окончания</th>
+             <th>Страниц</th>
+             <th>УПЛ</th>
+             <th>Формат</th>
+             <th>Тип_обл</th>
+             <th>Тип_бум</th>
+             <th>Плотность</th>
+         </tr>
+         </thead>
+         <tbody>
+ {% for res in results %}
+     <tr data-id="{{ res[1] }}">
+         <td>{{ res[1] }}</td>
+         <td>{{ res[2] }}</td>
+         <td>{{ res[3] }}</td>
+         <td>{{ res[4] }}</td>
+         <td>{{ res[5] }}</td>
+         <td>{{ res[6] }}</td>
+         <td>{{ res[7] }}</td>
+         <td>{{ res[8] }}</td>
+         <td>{{ res[9] }}</td>
+         <td>
+          <a href="https://example.com" style="font-weight: bold; color: blue;">
+            {{ res[10] }}
+          </a>
+         </td>
+         <td>{{ res[11] }}</td>
+         <td>{{ res[12] }}</td>
+         <td>{{ res[13] }}</td>
+         <td>{{ res[14] }}</td>
+         <td>{{ res[15] }}</td>
+         <td>{{ res[16] }}</td>
+         <td>{{ res[17] }}</td>
+         <td>{{ res[18] }}</td>
+         <td>{{ res[19] }}</td>
+         <td>{{ res[20] }}</td>
+         <td>{{ res[21] }}</td>
+         <td>{{ res[22] }}</td>
+         <td>{{ res[23] }}</td>
+         <td>{{ res[24] }}</td>
+         <td>{{ res[25] }}</td>
+         <td>{{ res[26] }}</td>
+         <td>{{ res[27] }}</td>
+         <td>{{ res[28] }}</td>
+     </tr>
+ {% endfor %}
+         </tbody>

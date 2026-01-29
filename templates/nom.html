@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Мои любимые песни
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-5">База данных</h1>
+
+<div class="sidebar">
+    <a href="#link1">Ссылка 1</a>
+    <a href="#link2">Ссылка 2</a>
+    <a href="#link3">Ссылка 3</a>
+    <a href="#link4">Ссылка 4</a>
+</div>
+
+
+<div class="content">
+
+<div class="card-columns">
+  <div class="row">
+  {% for res in results %}
+
+      <div class="card mb-3">
+          <div class="card-header fw-bold"><a onclick="LoadContent('/eis/{{ res[0] }}##this01')"  href="#">{{ res[0] }}</a></div>
+          <div class="card-body">
+              <p id="this01" class="badge bg-primary text-wrap"></p>
+              <p class="badge bg-primary text-wrap">{{ res[1] }}</p>
+              <p class="badge bg-primary text-wrap">{{ res[2] }}</p>
+          </div>
+      </div>
+
+  {% endfor %}
+  </div>
+</div>
+
+</div>
+{% endblock %}

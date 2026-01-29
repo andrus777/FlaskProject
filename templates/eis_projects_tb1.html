@@ -1,0 +1,32 @@
+ <thead class="thead-dark">
+         <tr>
+             <th>ID</th>
+             <th>Название</th>
+             <th>УрОбр</th>
+             <th>Статус</th>
+             <th>Примечание</th>
+             <th>В_резерве</th>
+             <th>Доступно</th>
+             <th>пр_2023</th>
+             <th>пр_2024</th>
+             <th>пр_2025</th>
+             <th>пр_2026</th>
+         </tr>
+         </thead>
+         <tbody>
+ {% for res in results %}
+     <tr data-id="{{ res[0] }}">
+         <td>{{ res[0] }}</td>
+         <td>{{ res[1] }}</td>
+         <td>{{ res[2] }}</td>
+         <td>{{ res[3] }}</td>
+         <td>{{ res[4] }}</td>
+         <td>{{ res[7] }}</td>
+         <td>{{ res[8] }}</td>
+         <td>{{ res[9] }}</td>
+         <td>{{ res[10] }}</td>
+         <td>{{ res[11] }}</td>
+         <td>{{ res[12] }}</td>
+     </tr>
+ {% endfor %}
+         </tbody>

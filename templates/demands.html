@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Список заказов{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+      {% for res in results %}
+
+      <div class="card mb-3">
+          <div class="card-header fw-bold">Проект:{{ res[14] }}</div>
+          <div class="card-body">
+              <p id="this01" class="badge bg-primary text-wrap"></p>
+              <p class="badge bg-primary text-wrap">{{ res[8] }}</p>
+              <p class="badge bg-primary text-wrap">{{ res[9] }}</p>
+              <p class="badge bg-primary text-wrap">{{ res[10] }}</p>
+          </div>
+      </div>
+
+      {% endfor %}
+    </div>
+{% endblock %}

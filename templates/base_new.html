@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap стили -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- иконки fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <!-- кастомные стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dopstyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dataTables.css') }}">
+    <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='ru.json') }}"></script>
+    <img src="{{ url_for('static', filename='loading.gif') }}">
+   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
+</head>
+<body class="sidebar-collapsed">
+
+<!-- Блок 1: заголовок и верхнее меню -->
+<header id="block1">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="btn btn-outline-light me-2" id="toggleSidebar" aria-label="Показать/скрыть меню" title="Показать/скрыть меню">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path d="M2.5 12.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-4a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-4a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11z"/>
+                </svg>
+            </button>
+
+            <a class="navbar-brand me-4" href="/"> ИС КОММЕРЧЕСКОЙ СЛУЖБЫ</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topMenu" aria-controls="topMenu" aria-expanded="false" aria-label="Переключить меню">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="topMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="/">Главная</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/eis/main">Eis</a></li>
+                    <li class="nav-item"><a class="nav-link"  href="/demanalis">Прайс-листы</a></li>
+                    <li class="nav-item"><a class="nav-link"  href="/demands/main">Заказы</a></li>
+                    <li class="nav-item"><a class="nav-link"  href="/demanalis">Аналитика</a></li>
+                    <li class="nav-item"><a class="nav-link"  href="/demanalis">Отчеты</a></li>
+                </ul>
+
+                <form class="d-flex" role="search" onsubmit="return false;">
+                    <input class="form-control form-control-sm me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+                    <button class="btn btn-sm btn-light" type="submit">Найти</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- контент дочерних шаблонов -->
+
+
+
+    {% block content %}
+    {% endblock %}
+
+<!-- Модальное окно -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-scrollable">
+ <div class="modal-content">
+ <div class="modal-header">
+ <h5 class="modal-title" id="myModalLabel">Заголовок модального окна</h5>
+ <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+ </div>
+ <div class="modal-body">
+ <!-- Содержимое с прокруткой -->
+ <div class="modal-scrollable-content">
+ <p>Длинный текст...</p>
+ <!-- Много контента -->
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+ <button type="button" class="btn btn-primary">Сохранить изменения</button>
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function(){
+        const body = document.body;
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        // Инициализация: на узких экранах по умолчанию скрыть сайдбар
+        function initCollapse() {
+            if(window.innerWidth < 992) body.classList.add('sidebar-collapsed');
+            else body.classList.remove('sidebar-collapsed');
+        }
+        initCollapse();
+        window.addEventListener('resize', initCollapse);
+
+        // Тоггл сайдбара по кнопке
+        toggleBtn.addEventListener('click', function(){
+            body.classList.toggle('sidebar-collapsed');
+        });
+
+        // Закрывать сайдбар клавишей Esc
+        document.addEventListener('keydown', function(e){
+            if(e.key === 'Escape') body.classList.add('sidebar-collapsed');
+        });
+
+        // Доступность: при открытии сайдбара фокусируем его (необязательно)
+        const sidebar = document.getElementById('sidebar');
+        toggleBtn.addEventListener('click', function(){
+            if(!body.classList.contains('sidebar-collapsed')) {
+                setTimeout(()=> sidebar.querySelector('a, button')?.focus(), 250);
+            } else {
+                document.getElementById('mainContent').focus();
+            }
+        });
+    })();
+</script>
+</body>
+</html>
+

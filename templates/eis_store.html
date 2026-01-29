@@ -1,0 +1,62 @@
+<div class="container-fluid">
+            <h1>Остатки на складе?</h1>
+
+<!-- Первая таблица -->
+ <div>
+     <table id="exTable"  class="display table-hover row-border">
+         <thead>
+         <tr>
+             <th>КодПроекта</th>
+             <th>Артикул</th>
+             <th>ISBN</th>
+             <th>Автор</th>
+             <th>Наименование</th>
+             <th>Год</th>
+             <th>Статус</th>
+             <th>Стандарт пачки</th>
+             <th>Место хранения</th>
+             <th>В наличии</th>
+             <th>Отгружается</th>
+             <th>В резерве</th>
+             <th>Доступно</th>
+             <th>Дата поступления</th>
+             <th>Тираж</th>
+         </tr>
+         </thead>
+         <tbody>
+ {% for res in results %}
+     <tr>
+        <td>{{ res[0] }}</td>
+        <td>{{ res[1] }}</td>
+        <td>{{ res[2] }}</td>
+        <td>{{ res[3] }}</td>
+        <td>{{ res[4] }}</td>
+        <td>{{ res[5] }}</td>
+        <td>{{ res[6] }}</td>
+        <td>{{ res[7] }}</td>
+        <td>{{ res[8] }}</td>
+        <td style="font-weight: bold; color: blue;">
+          {{ res[9] }}
+         </td>
+         <td style="font-weight: bold; color: blue;">
+          {{ res[10] }}
+         </td>
+         <td style="font-weight: bold; color: blue;">
+          {{ res[11] }}
+         </td>
+         <td style="font-weight: bold; color: blue;">
+        {{ res[12] }}
+         </td>
+        <td>{{ res[13] }}</td>
+        <td>{{ res[14] }}</td>
+     </tr>
+ {% endfor %}
+         </tbody>
+     </table>
+
+ </div>
+
+
+</div>
+
+
