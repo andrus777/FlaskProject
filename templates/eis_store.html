@@ -1,5 +1,5 @@
 <div class="container-fluid">
-            <h1>Остатки на складе?</h1>
+            <h1>Остатки на складе</h1>
 
 <!-- Первая таблица -->
  <div>
@@ -17,6 +17,7 @@
              <th>Место хранения</th>
              <th>В наличии</th>
              <th>В резерве</th>
+             <th>В отгрузке</th>
              <th>Доступно</th>
              <th>Дата поступления</th>
              <th>Тираж</th>
@@ -37,14 +38,17 @@
         <td style="font-weight: bold; color: blue;">
           {{ res[9] }}
          </td>
-         <td style="font-weight: bold; color: blue;">
-          {{ res[10] }}
+         <td style="font-weight: bold; color: blue;" >
+          <a href="#" onclick="openPopupWindow({{ res[1] }});">{{ res[10] }}</a>
          </td>
          <td style="font-weight: bold; color: blue;">
           {{ res[11] }}
          </td>
-        <td>{{ res[12] }}</td>
+         <td style="font-weight: bold; color: blue;">
+          {{ res[12] }}
+         </td>
         <td>{{ res[13] }}</td>
+        <td>{{ res[14] }}</td>
      </tr>
  {% endfor %}
          </tbody>

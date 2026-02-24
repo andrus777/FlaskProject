@@ -105,7 +105,7 @@ def eis(prcode):
                                       database='sppr')
         cursor = con.cursor()
         # sql_txt = "SELECT Проект, Проект_Имя, Примечание, Статус FROM sppr.tbl_projects ORDER BY Проект_Имя;"
-        sql_txt = "SELECT * FROM sppr.view_eis_pr;"
+        sql_txt = "select КодПроекта, Проект_имя, Уровень_образования, Статус, Примечание, В_резерве, Доступно, pr2023, pr2024, pr2025 from sppr.view_projects_all order by КодПроекта;"
 
         cursor.execute(sql_txt)
         results = cursor.fetchall()
@@ -127,6 +127,43 @@ def eis(prcode):
         cursor.close()
         con.close()
         return render_template('eis_store.html', results=results)
+
+    elif prcode == 'rez':
+        results = ""
+        # 1. Получаем JSON из запроса
+        data = request.get_json()
+        print('data: ', data)
+        if len(data['tbname']) > 1:
+            id = data['tbname']
+            print(f"Артикула: {id}")
+
+            # Создаём DataFrame
+            txt_sql = f"""
+                             ВЫБРАТЬ
+                                ЗапасыИПотребностиОстатки.Номенклатура.Артикул КАК Артикул,
+                                ЗапасыИПотребностиОстатки.Номенклатура.Наименование КАК Номенклатура,
+                                ЦЕЛ(ЗапасыИПотребностиОстатки.РезервироватьНаСкладеОстаток) КАК Резерв,
+                                ЗапасыИПотребностиОстатки.Заказ.Номер КАК ЗаказНомер, 
+                                ЗапасыИПотребностиОстатки.Заказ.Дата КАК ЗаказДата,
+                                ЗапасыИПотребностиОстатки.Заказ.Партнер.Наименование КАК Партнер,
+                                ЗапасыИПотребностиОстатки.Заказ.Менеджер.Наименование КАК Менеджер
+                            ИЗ
+                                РегистрНакопления.ЗапасыИПотребности.Остатки КАК ЗапасыИПотребностиОстатки
+                            ГДЕ
+                                ЗапасыИПотребностиОстатки.Склад.Наименование = "ИЦ Академия"
+                                И
+                                СокрЛп(ЗапасыИПотребностиОстатки.Номенклатура.Артикул) = "{id}"
+                        """
+            fields = ["Артикул", "Номенклатура", "Резерв", "ЗаказНомер", "ЗаказДата", "Партнер", "Менеджер"]
+            data = getOne(txt_sql, fields)
+            # print(data)
+            # results = pd.DataFrame(data)
+            results = [[row[field] for field in fields] for row in data]
+            print("Данные из 1С загружены")
+            print(results)
+
+        return render_template('eis_rezerv.html', results=results)
+
     else:
         if len(prcode)>3:
             con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
@@ -156,7 +193,7 @@ def eis_ext(prcode):
                                           database='sppr')
     cursor = con.cursor()
     if prcode.isdigit():
-        sql_txt = "SELECT * FROM sppr.view_eis_izd WHERE ПроектКод LIKE '%" + prcode + "';"
+        sql_txt = "SELECT * FROM sppr.view_configuration_all WHERE КодПроекта = '" + prcode + "';"
         print(sql_txt)
 
         cursor.execute(sql_txt)

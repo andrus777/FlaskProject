@@ -19,9 +19,9 @@ function sendRequest(url, sect, dataSend = '') {
             if (url == "/eis/store") {
                 //alert("store");
                 initStoreHandlers();
+                //initAdditionalHandlers();
             }
             if (url == "/eis/projects") {
-                //alert("eispro");
                 initAdditionalHandlers();
             }
 
@@ -32,6 +32,10 @@ function sendRequest(url, sect, dataSend = '') {
              if (url == "adminp/update_table") {
                 initStoreHandlers();
             }
+             if (url == "eis/rez") {
+                //alert("test");
+                initModalHandlers();
+            }
         },
         error: function (error) {
             console.error('Ошибка:', error);
@@ -41,14 +45,23 @@ function sendRequest(url, sect, dataSend = '') {
 }
 
 
-function initStoreHandlers() {
-    const exTable = document.getElementById('exTable');
+// Проверка включен ли режим администрирования
+function testADM(func_execute, url, sect, value) {
+    const checkbox = document.getElementById('toggle_adm');
+    //alert(checkbox.checked);
+    if (checkbox.checked) {
+       func_execute( url, sect, value);
+    }
+}
+
+function initModalHandlers() {
+    const exTable = document.getElementById('exTableModal');
     //alert(exTable);
-    $('#exTable').DataTable({
+   var table = $('#exTableModal').DataTable({
         autoWidth: true,
-        scrollY: '500px',
-        scrollX: true,
-        scrollCollapse: true,
+        pageLength: 25,
+        //scrollY: '500px',
+        //scrollX: true,
         paging: true,
         ordering: true,
         orderMulti: true,
@@ -59,6 +72,27 @@ function initStoreHandlers() {
     });
 
 }
+
+function initStoreHandlers() {
+    const exTable = document.getElementById('exTable');
+    //alert(exTable);
+   var table = $('#exTable').DataTable({
+        autoWidth: true,
+        pageLength: 25,
+        //scrollY: '500px',
+        //scrollX: true,
+        paging: true,
+        ordering: true,
+        orderMulti: true,
+        info: true,
+        searching: true,
+        language: {
+            url: '/static/ru.json'}
+    });
+
+}
+
+
 
 function initAdditionalHandlers() {
 
@@ -77,6 +111,20 @@ function initAdditionalHandlers() {
         searching: true,
         language: {
             url: '/static/ru.json'}
+    });
+
+    var stable = $('#selectedTable').DataTable({
+        pageLength: 25,
+        paging: true,
+        ordering: true,
+        info: true,
+        orderMulti: true,
+        language: {
+            url: '/static/ru.json'},
+        columnDefs: [
+            {"class" : "col-sm-9", "targets": 2},
+            {"width": "100px", "targets": 4}
+            ]
     });
 
 
@@ -138,19 +186,22 @@ function initAdditionalHandlers() {
 
 
 // Инициализация модального окна
-const myModal = new bootstrap.Modal('#myModal', {
- backdrop: 'static', // Запретить закрытие по клику вне окна
- keyboard: false // Запретить закрытие по клавише Esc
-});
+var myModal
+function modalWnd(){
+    myModal = new bootstrap.Modal('#myModal', {
+     backdrop: 'static', // Запретить закрытие по клику вне окна
+     keyboard: false // Запретить закрытие по клавише Esc
+    });
+    // События модального окна
+    myModal.addEventListener('show.bs.modal', function() {
+     // Действия при открытии
+    });
 
-// События модального окна
-myModal.addEventListener('show.bs.modal', function() {
- // Действия при открытии
-});
+    myModal.addEventListener('hidden.bs.modal', function() {
+     // Действия при закрытии
+    });
+}
 
-myModal.addEventListener('hidden.bs.modal', function() {
- // Действия при закрытии
-});
 
 
 function update_adm(tableName) {
@@ -171,7 +222,66 @@ function update_adm(tableName) {
 }
 
 
+var popup = document.getElementById('popup');
+var closeBtn = document.querySelector('.close-btn');
+var popupHeader = document.getElementById('popupHeader');
 
+var isDown = false;
+var initialX, initialY, initialMouseX, initialMouseY;
+
+var shiftX, shiftY;
+
+// Функция для открытия окна (вызывается из HTML по клику)
+function openPopupWindow(id) {
+
+    sendRequest("/eis/rez", "#popup-content", id)
+    initPopUp();
+    popup.classList.add('active');
+}
+
+
+function initPopUp(){
+    popup = document.getElementById('popup');
+    closeBtn = document.querySelector('.close-btn');
+    popupHeader = document.getElementById('popupHeader');
+
+
+
+    // Закрытие окна по клику на кнопку «×»
+closeBtn.addEventListener('click', () => {
+    popup.classList.remove('active');
+});
+
+// Закрытие окна при клике вне его
+window.addEventListener('click', (e) => {
+    if (e.target === popup) {
+        popup.classList.remove('active');
+    }
+});
+
+// Логика перетаскивания окна
+popupHeader.addEventListener('mousedown', (e) => {
+    isDown = true;
+    initialX = popup.offsetLeft;
+    initialY = popup.offsetTop;
+    initialMouseX = e.clientX;
+    initialMouseY = e.clientY;
+});
+
+document.addEventListener('mouseup', () => {
+    isDown = false;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    shiftX = e.clientX - initialMouseX;
+    shiftY = e.clientY - initialMouseY;
+    popup.style.left = initialX + shiftX + 'px';
+    popup.style.top = initialY + shiftY + 'px';
+});
+
+}
 
 
 

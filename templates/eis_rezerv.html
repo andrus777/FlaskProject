@@ -1,0 +1,40 @@
+<div class="container-fluid">
+<h1>Резервы по изданию</h1>
+
+<!-- Первая таблица -->
+ <div>
+     <table id="exTableModal"  class="display table-hover row-border">
+         <thead>
+         <tr>
+             <th>Артикул</th>
+             <th>Номенклатура</th>
+             <th>Резерв</th>
+             <th>ЗаказНомер</th>
+             <th>Дата</th>
+             <th>Партнер</th>
+             <th>Менеджер</th>
+         </tr>
+         </thead>
+         <tbody>
+ {% for res in results %}
+     <tr>
+        <td>{{ res[0] }}</td>
+        <td>{{ res[1] }}</td>
+        <td>{{ res[2] }}</td>
+        <td>{{ res[3] }}</td>
+        <td>{{ res[4] }}</td>
+        <td>{{ res[5] }}</td>
+        <td>{{ res[6] }}</td>
+        <td>{{ res[7] }}</td>
+
+     </tr>
+ {% endfor %}
+         </tbody>
+     </table>
+
+ </div>
+
+
+</div>
+
+
