@@ -5612,5 +5612,54 @@ h1 {
     font-size: 16px;
     color: #4CAF50;
     text-decoration: none;
+
 }
+
+.popup {
+  /* Размеры в % от viewport */
+  width: 80vw;    /* 80% от ширины экрана */
+  height: 70vh;   /* 70% от высоты экрана */
+
+  /* Фиксированное позиционирование (по центру экрана) */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Визуальные стили */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Скрываем лишний контент за границами */
+  z-index: 1000; /* Сверху всех элементов */
+}
+
+.popup-header {
+  padding: 16px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.popup-content {
+  /* Высота — оставшееся место после шапки */
+  height: calc(70vh - 60px); /* 70vh (высота окна) − 60px (высота шапки) */
+
+  /* Вертикальная прокрутка */
+  overflow-y: auto;
+
+  /* Отступы для контента */
+  padding: 20px;
+}
+
 

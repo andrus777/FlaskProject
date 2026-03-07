@@ -53,14 +53,14 @@ function testADM(func_execute, url, sect, value) {
        func_execute( url, sect, value);
     }
 }
-
+var exTable;
 function initModalHandlers() {
-    const exTable = document.getElementById('exTableModal');
+    exTable = document.getElementById('exTableModal');
     //alert(exTable);
    var table = $('#exTableModal').DataTable({
         autoWidth: true,
         pageLength: 25,
-        //scrollY: '500px',
+        scrollY: '300px',
         //scrollX: true,
         paging: true,
         ordering: true,
@@ -111,6 +111,7 @@ function initAdditionalHandlers() {
         searching: true,
         language: {
             url: '/static/ru.json'}
+
     });
 
     var stable = $('#selectedTable').DataTable({
@@ -122,8 +123,9 @@ function initAdditionalHandlers() {
         language: {
             url: '/static/ru.json'},
         columnDefs: [
-            {"class" : "col-sm-9", "targets": 2},
-            {"width": "100px", "targets": 4}
+                { width: '30px', targets: 0 }, // Первый столбец — 150 px
+                { width: '200px', targets: 1 }, // Второй столбец — 200 px
+                { width: '200px',   targets: 11 }
             ]
     });
 
@@ -235,6 +237,13 @@ var shiftX, shiftY;
 function openPopupWindow(id) {
 
     sendRequest("/eis/rez", "#popup-content", id)
+    initPopUp();
+    popup.classList.add('active');
+}
+
+function openPopupWindowSale(id,year) {
+
+    sendRequest("/eis/sale/" + id, "#popup-content", year)
     initPopUp();
     popup.classList.add('active');
 }

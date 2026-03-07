@@ -96,6 +96,27 @@ def update():  # put application's code here
     start_update()
     return render_template('base_new.html')
 
+@app.route('/eis/sale/<izd>', methods=['GET','POST'])
+def eis_sale(izd):
+    print("Код в url: ", izd)
+    data = request.get_json()
+    print('data: ', data)
+    if len(data['tbname']) > 1:
+        id = data['tbname']
+        print(f"Артикула: {id}")
+
+    if len(izd) == 9:
+        con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
+                                      database='sppr')
+        cursor = con.cursor()
+        sql_txt = f"select Заказ, Дата_накладной, Краткое_название, Количество, Сумма_накладной from sppr.src_sale_statistic_all where полный_номер='{izd}' and Год={id} order by Заказ;"
+
+        cursor.execute(sql_txt)
+        results = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return render_template('eis_sale.html', results=results)
+
 @app.route('/eis/<prcode>', methods=['GET','POST'])
 def eis(prcode):
     print("Код в url: ", prcode)
@@ -105,7 +126,7 @@ def eis(prcode):
                                       database='sppr')
         cursor = con.cursor()
         # sql_txt = "SELECT Проект, Проект_Имя, Примечание, Статус FROM sppr.tbl_projects ORDER BY Проект_Имя;"
-        sql_txt = "select КодПроекта, Проект_имя, Уровень_образования, Статус, Примечание, В_резерве, Доступно, pr2023, pr2024, pr2025 from sppr.view_projects_all order by КодПроекта;"
+        sql_txt = "select КодПроекта, Проект_Имя, Уровень_образования, Статус, Примечание, В_резерве, Доступно, pr2023, epr2023, pr2024, epr2024, pr2025, epr2025, pr2026, epr2026 from sppr.dt_all_projects order by КодПроекта;"
 
         cursor.execute(sql_txt)
         results = cursor.fetchall()
@@ -193,7 +214,7 @@ def eis_ext(prcode):
                                           database='sppr')
     cursor = con.cursor()
     if prcode.isdigit():
-        sql_txt = "SELECT * FROM sppr.view_configuration_all WHERE КодПроекта = '" + prcode + "';"
+        sql_txt = "SELECT * FROM sppr.view_configuration_all WHERE left(Артикул,1)='1' and  КодПроекта = '" + prcode + "';"
         print(sql_txt)
 
         cursor.execute(sql_txt)

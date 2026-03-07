@@ -4,6 +4,7 @@
 <button id="toggleFilterBtn" class="btn btn-primary">
   Скрыть все снятые проекты
 </button>
+<br>
 
 <!-- Первая таблица -->
  <div class="table-wrapper mb-4">
@@ -20,6 +21,7 @@
              <th>пр_2023</th>
              <th>пр_2024</th>
              <th>пр_2025</th>
+             <th>пр_2026</th>
          </tr>
          </thead>
          <tbody>
@@ -30,11 +32,24 @@
          <td>{{ res[2] }}</td>
          <td>{{ res[3] }}</td>
          <td>{{ res[4] }}</td>
-         <td>{{ res[5] }}</td>
-         <td>{{ res[6] }}</td>
-         <td>{{ res[7] }}</td>
-         <td>{{ res[8] }}</td>
-         <td>{{ res[9] }}</td>
+         <td style="color: blue;">{{res[5] }}</td>
+         <td style="font-weight: bold; color: blue;">{{res[6] }}</td>
+         <td>КН:<span style="font-weight: bold; color: blue;">{{ res[7] }}</span>
+             <br>
+             ЭБ:<span style="font-weight: bold; color: green;">{{ res[8] }}</span>
+         </td>
+         <td>КН:<span style="font-weight: bold; color: blue;">{{res[9]}}</span>
+             <br>
+             ЭБ:<span style="font-weight: bold; color: green;">{{ res[10] }}</span>
+         </td>
+         <td>КН:<span style="font-weight: bold; color: blue;">{{ res[11] }}</span>
+             <br>
+             ЭБ:<span style="font-weight: bold; color: green;">{{ res[12] }}</span>
+         </td>
+         <td>КН:<span style="font-weight: bold; color: darkblue;">{{ res[13] }}</span>
+             <br>
+             ЭБ:<span style="font-weight: bold; color: darkgreen;">{{ res[14] }}</span>
+         </td>
      </tr>
  {% endfor %}
          </tbody>

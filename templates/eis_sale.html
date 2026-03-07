@@ -6,13 +6,11 @@
      <table id="exTableModal"  class="display table-hover row-border table-striped table-bordered table-sticky">
          <thead class="thead-dark">
          <tr>
-             <th>Артикул</th>
-             <th>Номенклатура</th>
-             <th>Резерв</th>
-             <th>ЗаказНомер</th>
-             <th>Дата</th>
-             <th>Партнер</th>
-             <th>Менеджер</th>
+             <th>Заказ</th>
+             <th>Дата_накладной</th>
+             <th>Краткое_название_клиента</th>
+             <th>Количество</th>
+             <th>Сумма_накладной</th>
          </tr>
          </thead>
          <tbody>
@@ -23,9 +21,6 @@
         <td>{{ res[2] }}</td>
         <td>{{ res[3] }}</td>
         <td>{{ res[4] }}</td>
-        <td>{{ res[5] }}</td>
-        <td>{{ res[6] }}</td>
-        <td>{{ res[7] }}</td>
 
      </tr>
  {% endfor %}
@@ -36,5 +31,3 @@
 
 
 </div>
-
-

@@ -5,18 +5,16 @@
              <th>Год</th>
              <th>ISBN</th>
              <th>Тираж</th>
-             <th>прод_2023</th>
-             <th>прод_2024</th>
-             <th>прод_2025</th>
+             <th>Продажи 2023-2025</th>
+             <th>прод_2026</th>
              <th>В_наличии</th>
              <th>В_резерве</th>
              <th>Отгружается</th>
              <th>Доступно</th>
-             <th>Дата (подп.печ.)</th>
-             <th>Дата (отпр.тип)</th>
-             <th>Дата (подп.печ.)</th>
-             <th>Дата (план.гот.)</th>
-             <th>Дата (пост.склад)</th>
+             <th>Даты движения издания</th>
+             <th>№_договора</th>
+             <th>Дата_окончания</th>
+             <th>Данные по последней ТК</th>
              <th>Стандарт</th>
              <th>МХ</th>
              <th>Страниц</th>
@@ -24,8 +22,6 @@
              <th>Тип_обл</th>
              <th>Тип_бум</th>
              <th>Плотность</th>
-             <th>№_договора</th>
-             <th>Дата_окончания</th>
 
          </tr>
          </thead>
@@ -37,18 +33,30 @@
          <td>{{ res[3] }}</td>
          <td>{{ res[4] }}</td>
          <td>{{ res[5] }}</td>
-         <td>{{ res[6] }}</td>
-         <td>{{ res[7] }}</td>
-         <td>{{ res[8] }}</td>
-         <td>{{ res[9] }}</td>
-         <td>{{ res[10] }}</td>
-         <td>{{ res[11] }}</td>
-         <td>{{ res[12] }}</td>
-         <td>{{ res[13] }}</td>
-         <td>{{ res[14] }}</td>
-         <td>{{ res[15] }}</td>
-         <td>{{ res[16] }}</td>
-         <td>{{ res[17] }}</td>
+         <td>
+             2023: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2023');">{{ res[6] }}</a><br>
+             2024: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2024');">{{ res[7] }}</a><br>
+             2025: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2025');">{{ res[8] }}</a><br>
+         </td>
+         <td><span style="font-weight: bold; color: red;">{{ res[9] }}</span></td>
+         <td><span style="font-weight: bold; color: blue;">{{ res[10] }}</span></td>
+         <td><a href="#" onclick="openPopupWindow({{ res[1] }});">{{ res[11] }}</a></td>
+         <td><span style="color: blue;">{{ res[12] }}</span></td>
+         <td><span style="font-weight: bold; color: blue;">{{ res[13] }}</span></td>
+         <td>
+                   Подписано в печать: {{ res[14] }}<br>
+              Отправлено в типографию: {{ res[15] }}<br>
+             Плановая дата готовности: {{ res[16] }}<br>
+                 Поступление на склад: {{ res[17] }}<br>
+         </td>
+         <td>{{ res[29] }}</td>
+         <td>{{ res[30] }}</td>
+         <td>
+             Дата последней ТК: {{ res[25] }}<br>
+                      Номер ТК: {{ res[26] }}<br>
+                        Тип ТК: {{ res[28] }}<br>
+                   Комментарий: {{ res[27] }}<br>
+         </td>
          <td>{{ res[18] }}</td>
          <td>{{ res[19] }}</td>
          <td>{{ res[20] }}</td>
@@ -56,8 +64,6 @@
          <td>{{ res[22] }}</td>
          <td>{{ res[23] }}</td>
          <td>{{ res[24] }}</td>
-         <td>{{ res[25] }}</td>
-         <td>{{ res[26] }}</td>
      </tr>
  {% endfor %}
          </tbody>
