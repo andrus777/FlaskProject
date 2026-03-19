@@ -77,7 +77,14 @@
         /* Чтобы контент уходил "под" шапку при скролле — шапка fixed и выше по z-index */
 
 .table-wrapper {
- max-height: 300px;
+ max-height: 700px;
+ overflow-y: auto;
+ border: 1px solid #dee2e6;
+ border-radius: 0.3rem;
+}
+
+.table-wrapper-eis {
+ max-height: 400px;
  overflow-y: auto;
  border: 1px solid #dee2e6;
  border-radius: 0.3rem;

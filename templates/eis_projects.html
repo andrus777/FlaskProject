@@ -1,136 +1,141 @@
 <div class="container-fluid">
-            <h1>Сведения о ЕИС-проектах</h1>
-            <p class="lead">Возможна фильтрация и выбор нужного проекта.</p>
-<button id="toggleFilterBtn" class="btn btn-primary">
-  Скрыть все снятые проекты
-</button>
-<br>
+    <h1>Сведения о ЕИС-проектах</h1>
+    <p class="lead">Возможна фильтрация и выбор нужного проекта.</p>
+    <button id="toggleFilterBtn" class="btn btn-primary">
+        Скрыть все снятые проекты
+    </button>
+    <br>
 
-<!-- Первая таблица -->
- <div class="table-wrapper mb-4">
-     <table id="mainTable"  class="display table-hover row-border table-striped table-bordered table-sticky">
-         <thead class="thead-dark">
-         <tr>
-             <th>КодПроекта</th>
-             <th>Наименование</th>
-             <th>УрОбр</th>
-             <th>Статус</th>
-             <th>Примечание</th>
-             <th>В_резерве</th>
-             <th>Доступно</th>
-             <th>пр_2023</th>
-             <th>пр_2024</th>
-             <th>пр_2025</th>
-             <th>пр_2026</th>
-         </tr>
-         </thead>
-         <tbody>
- {% for res in results %}
-     <tr data-id="{{ res[0] }}">
-         <td>{{ res[0] }}</td>
-         <td>{{ res[1] }}</td>
-         <td>{{ res[2] }}</td>
-         <td>{{ res[3] }}</td>
-         <td>{{ res[4] }}</td>
-         <td style="color: blue;">{{res[5] }}</td>
-         <td style="font-weight: bold; color: blue;">{{res[6] }}</td>
-         <td>КН:<span style="font-weight: bold; color: blue;">{{ res[7] }}</span>
-             <br>
-             ЭБ:<span style="font-weight: bold; color: green;">{{ res[8] }}</span>
-         </td>
-         <td>КН:<span style="font-weight: bold; color: blue;">{{res[9]}}</span>
-             <br>
-             ЭБ:<span style="font-weight: bold; color: green;">{{ res[10] }}</span>
-         </td>
-         <td>КН:<span style="font-weight: bold; color: blue;">{{ res[11] }}</span>
-             <br>
-             ЭБ:<span style="font-weight: bold; color: green;">{{ res[12] }}</span>
-         </td>
-         <td>КН:<span style="font-weight: bold; color: darkblue;">{{ res[13] }}</span>
-             <br>
-             ЭБ:<span style="font-weight: bold; color: darkgreen;">{{ res[14] }}</span>
-         </td>
-     </tr>
- {% endfor %}
-         </tbody>
-     </table>
- </div>
+    <!-- Первая таблица -->
+    <div class="table-wrapper-eis mb-4">
+        <table id="mainTable" class="display table-hover row-border table-striped table-bordered table-sticky">
+            <thead class="thead-dark">
+            <tr>
+                <th>КодПроекта</th>
+                <th>Наименование</th>
+                <th>УрОбр</th>
+                <th>Статус</th>
+                <th>Альтернативный проект</th>
+                <th>Примечание</th>
+                <th>В_резерве</th>
+                <th>Доступно</th>
+                <th>пр_2023</th>
+                <th>пр_2024</th>
+                <th>пр_2025</th>
+                <th>пр_2026</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for res in results %}
+                <tr data-id="{{ res[0] }}">
+                    <td>{{ res[0] }}</td>
+                    <td>{{ res[1] }}</td>
+                    <td>{{ res[2] }}</td>
+                    <td>{{ res[3] }}</td>
+                    <td><a href="#" onclick="jampToAlterCode('#mainTable','{{ res[16] }}');">{{ res[16] }}</a></td>
+                    <td>{{ res[4] }}</td>
+                    <td style="color: blue;">{{ res[5] }}</td>
+                    <td> Доступно:<span style="font-weight: bold; color: darkred;">{{ res[6] }}</span>
+                        <br>
+                        в т.ч. Ликвид:<span style="font-weight: bold; color: green;">{{ res[15] }}</span>
+                    </td>
+                    <td>КН:<span style="font-weight: bold; color: blue;">{{ res[7] }}</span>
+                        <br>
+                        ЭБ:<span style="font-weight: bold; color: green;">{{ res[8] }}</span>
+                    </td>
+                    <td>КН:<span style="font-weight: bold; color: blue;">{{ res[9] }}</span>
+                        <br>
+                        ЭБ:<span style="font-weight: bold; color: green;">{{ res[10] }}</span>
+                    </td>
+                    <td>КН:<span style="font-weight: bold; color: blue;">{{ res[11] }}</span>
+                        <br>
+                        ЭБ:<span style="font-weight: bold; color: green;">{{ res[12] }}</span>
+                    </td>
+                    <td>КН:<span style="font-weight: bold; color: darkblue;">{{ res[13] }}</span>
+                        <br>
+                        ЭБ:<span style="font-weight: bold; color: darkgreen;">{{ res[14] }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 
-<!-- Вторая таблица -->
- <h4>Таблица выбранных элементов</h4>
- <div class="table-wrapper mb-4" style="max-height: 400px;">
- <table class="table table-striped table-bordered table-sticky" id="selectedTable">
-         <thead class="thead-dark">
-         <tr>
-             <th>Полный_номер</th>
-             <th>Вид</th>
-             <th>Название</th>
-             <th>Год</th>
-             <th>Статус</th>
-             <th>ISBN</th>
-             <th>Тираж</th>
-             <th>В_наличии</th>
-             <th>Отгружается</th>
-             <th>В_резерве</th>
-             <th>Доступно</th>
-             <th>Дата (подп.печ.)</th>
-             <th>Дата ТП</th>
-             <th>Дата (отпр. печ.)</th>
-             <th>Дата (пост. склад)</th>
-             <th>Стандарт</th>
-             <th>прод_2023</th>
-             <th>прод_2024</th>
-             <th>прод_2025</th>
-             <th>прод_2026</th>
-             <th>№_договора</th>
-             <th>Дата_окончания</th>
-             <th>Страниц</th>
-             <th>УПЛ</th>
-             <th>Формат</th>
-             <th>Тип_обл</th>
-             <th>Тип_бум</th>
-             <th>Плотность</th>
-         </tr>
-         </thead>
-         <tbody>
+    <!-- Вторая таблица -->
+    <h4>Таблица выбранных элементов</h4>
+    <div class="table-wrapper mb-4" style="max-height: 400px;">
+        <table class="table table-striped table-bordered table-sticky" id="selectedTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>Полный_номер</th>
+                <th>Вид</th>
+                <th>Название</th>
+                <th>Год</th>
+                <th>Статус</th>
+                <th>ISBN</th>
+                <th>Тираж</th>
+                <th>В_наличии</th>
+                <th>Отгружается</th>
+                <th>В_резерве</th>
+                <th>Доступно</th>
+                <th>Дата (подп.печ.)</th>
+                <th>Дата ТП</th>
+                <th>Дата (отпр. печ.)</th>
+                <th>Дата (пост. склад)</th>
+                <th>Стандарт</th>
+                <th>прод_2023</th>
+                <th>прод_2024</th>
+                <th>прод_2025</th>
+                <th>прод_2026</th>
+                <th>№_договора</th>
+                <th>Дата_окончания</th>
+                <th>Страниц</th>
+                <th>УПЛ</th>
+                <th>Формат</th>
+                <th>Тип_обл</th>
+                <th>Тип_бум</th>
+                <th>Плотность</th>
+            </tr>
+            </thead>
+            <tbody>
 
-     <tr data-id="0">
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-         <td></td>
-     </tr>
+            <tr data-id="0">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
 
-         </tbody>
-            </table>
+            </tbody>
+        </table>
 
-</div>
+    </div>
 
-<!-- JavaScript для функционала -->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript для функционала -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

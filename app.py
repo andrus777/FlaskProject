@@ -120,13 +120,15 @@ def eis_sale(izd):
 @app.route('/eis/<prcode>', methods=['GET','POST'])
 def eis(prcode):
     print("Код в url: ", prcode)
+    client_ip = get_client_ip()
+    print(f'Определённый IP-адрес: {client_ip}')
 
     if prcode == 'projects':
         con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
                                       database='sppr')
         cursor = con.cursor()
         # sql_txt = "SELECT Проект, Проект_Имя, Примечание, Статус FROM sppr.tbl_projects ORDER BY Проект_Имя;"
-        sql_txt = "select КодПроекта, Проект_Имя, Уровень_образования, Статус, Примечание, В_резерве, Доступно, pr2023, epr2023, pr2024, epr2024, pr2025, epr2025, pr2026, epr2026 from sppr.dt_all_projects order by КодПроекта;"
+        sql_txt = "select КодПроекта, Проект_Имя, Уровень_образования, Статус, Примечание, В_резерве, Доступно, pr2023, epr2023, pr2024, epr2024, pr2025, epr2025, pr2026, epr2026, ДоступноЛикв, Альтернативный_проект from sppr.dt_all_projects order by КодПроекта;"
 
         cursor.execute(sql_txt)
         results = cursor.fetchall()
@@ -148,6 +150,17 @@ def eis(prcode):
         cursor.close()
         con.close()
         return render_template('eis_store.html', results=results)
+
+    elif prcode == 'inprod':
+        con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q', database='sppr')
+
+        cursor = con.cursor()
+        sql_txt = "SELECT *  FROM sppr.view_in_production;"
+        cursor.execute(sql_txt)
+        results = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return render_template('eis_in_production.html', results=results)
 
     elif prcode == 'rez':
         results = ""
@@ -236,7 +249,27 @@ def demands(demtag):
         con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
                                   database='sppr')
         cursor = con.cursor()
-        sql_txt = "SELECT * FROM view_all_demands;"
+        sql_txt = """
+                select 
+                    Проект,
+                    БизнесРегион,
+                    Менеджер,
+                    Партнер,
+                    Номер, 
+                    DATE_FORMAT(ДатаЗаказа,'%d.%m.%Y') as ДатаЗаказа,   
+                    СтатусЗаказа,    
+                    Соглашение, 
+                    Количество, 
+                    СуммаСНДС, 
+                    КоличествоРеал, 
+                    СуммаРеал, 
+                    ДатаРеализации, 
+                    ДокументРеализации, 
+                    Сумма_платежа,
+                    ДатаПлатежа
+                from sppr.view_all_demands where ГодРеализации <> 2025 and (СтатусЗаказа <> "НЕ учитывать" and СтатусЗаказа <> "Отменен")
+                order by Проект, БизнесРегион, Менеджер
+        """
         print(sql_txt)
         cursor.execute(sql_txt)
         results = cursor.fetchall()
@@ -246,6 +279,34 @@ def demands(demtag):
         return render_template('demands_all.html', results=results)
     else:
         return render_template('demands_main.html')
+
+@app.route('/reports/<reptag>', methods=['GET','POST'])
+def reports(reptag):
+    print("Код в url: ", reptag)
+    if reptag == "about":
+        return render_template('reports_about.html')
+    elif reptag == "dashboard":
+
+        con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
+                                  database='sppr')
+        cursor = con.cursor()
+        sql_txt = """
+                select *
+                from sppr.view_all_demands where ГодРеализации <> 2025 and (СтатусЗаказа <> "НЕ учитывать" and СтатусЗаказа <> "Отменен")
+                order by Проект, БизнесРегион, Менеджер;
+        """
+        print(sql_txt)
+        cursor.execute(sql_txt)
+        results = cursor.fetchall()
+
+        cursor.close()
+        con.close()
+        return render_template('demands_dashboard.html', results=results)
+    else:
+        return render_template('reports_main.html')
+
+
+
 @app.route('/game')
 def game():  # put application's code here
     return render_template('game.html')
@@ -492,6 +553,19 @@ def submit_form():
 
 
     return render_template('dem_analis.html', form=form)  # Отображение шаблона с формой
+
+def get_client_ip():
+    """Надёжно определяет IP-адрес клиента с учётом прокси."""
+    # Порядок проверки: сначала доверенные заголовки, затем стандартный remote_addr
+    ip = request.headers.get('X-Real-IP')  # Nginx
+    if ip is None:
+        ip = request.headers.get('X-Forwarded-For')  # Прокси
+        if ip:
+            # Берём первый IP из списка (реальный клиент)
+            ip = ip.split(',')[0].strip()
+    if ip is None:
+        ip = request.remote_addr  # Резервный вариант
+    return ip
 
 if __name__ == '__main__':
     from waitress import serve

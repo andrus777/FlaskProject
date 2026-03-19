@@ -1,69 +1,69 @@
- <thead class="thead-dark">
-         <tr>
-             <th>Артикул</th>
-             <th>Название</th>
-             <th>Год</th>
-             <th>ISBN</th>
-             <th>Тираж</th>
-             <th>Продажи 2023-2025</th>
-             <th>прод_2026</th>
-             <th>В_наличии</th>
-             <th>В_резерве</th>
-             <th>Отгружается</th>
-             <th>Доступно</th>
-             <th>Даты движения издания</th>
-             <th>№_договора</th>
-             <th>Дата_окончания</th>
-             <th>Данные по последней ТК</th>
-             <th>Стандарт</th>
-             <th>МХ</th>
-             <th>Страниц</th>
-             <th>Формат</th>
-             <th>Тип_обл</th>
-             <th>Тип_бум</th>
-             <th>Плотность</th>
+<thead class="thead-dark">
+<tr>
+    <th>Артикул</th>
+    <th>Название</th>
+    <th>Год</th>
+    <th>ISBN</th>
+    <th>Тираж</th>
+    <th>Продажи 2023-2025</th>
+    <th>прод_2026</th>
+    <th>В_наличии</th>
+    <th>В_резерве</th>
+    <th>Отгружается</th>
+    <th>Доступно</th>
+    <th>Даты движения издания</th>
+    <th>№_договора</th>
+    <th>Дата_окончания</th>
+    <th>Данные по последней ТК</th>
+    <th>Стандарт</th>
+    <th>МХ</th>
+    <th>Страниц</th>
+    <th>Формат</th>
+    <th>Тип_обл</th>
+    <th>Тип_бум</th>
+    <th>Плотность</th>
 
-         </tr>
-         </thead>
-         <tbody>
- {% for res in results %}
-     <tr data-id="{{ res[1] }}">
-         <td>{{ res[1] }}</td>
-         <td>{{ res[2] }}</td>
-         <td>{{ res[3] }}</td>
-         <td>{{ res[4] }}</td>
-         <td>{{ res[5] }}</td>
-         <td>
-             2023: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2023');">{{ res[6] }}</a><br>
-             2024: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2024');">{{ res[7] }}</a><br>
-             2025: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2025');">{{ res[8] }}</a><br>
-         </td>
-         <td><span style="font-weight: bold; color: red;">{{ res[9] }}</span></td>
-         <td><span style="font-weight: bold; color: blue;">{{ res[10] }}</span></td>
-         <td><a href="#" onclick="openPopupWindow({{ res[1] }});">{{ res[11] }}</a></td>
-         <td><span style="color: blue;">{{ res[12] }}</span></td>
-         <td><span style="font-weight: bold; color: blue;">{{ res[13] }}</span></td>
-         <td>
-                   Подписано в печать: {{ res[14] }}<br>
-              Отправлено в типографию: {{ res[15] }}<br>
-             Плановая дата готовности: {{ res[16] }}<br>
-                 Поступление на склад: {{ res[17] }}<br>
-         </td>
-         <td>{{ res[29] }}</td>
-         <td>{{ res[30] }}</td>
-         <td>
-             Дата последней ТК: {{ res[25] }}<br>
-                      Номер ТК: {{ res[26] }}<br>
-                        Тип ТК: {{ res[28] }}<br>
-                   Комментарий: {{ res[27] }}<br>
-         </td>
-         <td>{{ res[18] }}</td>
-         <td>{{ res[19] }}</td>
-         <td>{{ res[20] }}</td>
-         <td>{{ res[21] }}</td>
-         <td>{{ res[22] }}</td>
-         <td>{{ res[23] }}</td>
-         <td>{{ res[24] }}</td>
-     </tr>
- {% endfor %}
-         </tbody>
+</tr>
+</thead>
+<tbody>
+{% for res in results %}
+    <tr data-id="{{ res[1] }}">
+        <td>{{ res[1] }}</td>
+        <td>{{ res[2] }}</td>
+        <td>{{ res[3] }}</td>
+        <td>{{ res[4] }}</td>
+        <td>{{ res[5] }}</td>
+        <td>
+            2023: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2023');">{{ res[6] }}</a><br>
+            2024: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2024');">{{ res[7] }}</a><br>
+            2025: <a href="#" onclick="openPopupWindowSale({{ res[1] }},'2025');">{{ res[8] }}</a><br>
+        </td>
+        <td><span style="font-weight: bold; color: red;">{{ res[9] }}</span></td>
+        <td><span style="font-weight: bold; color: blue;">{{ res[10] }}</span></td>
+        <td><a href="#" onclick="openPopupWindow({{ res[1] }});">{{ res[11] }}</a></td>
+        <td><span style="color: blue;">{{ res[12] }}</span></td>
+        <td><span style="font-weight: bold; color: blue;">{{ res[13] }}</span></td>
+        <td>
+            Подписано в печать: {{ res[14] }}<br>
+            Отправлено в типографию: {{ res[15] }}<br>
+            Плановая дата готовности: {{ res[16] }}<br>
+            Поступление на склад: {{ res[17] }}<br>
+        </td>
+        <td>{{ res[29] }}</td>
+        <td>{{ res[30] }}</td>
+        <td>
+            Дата последней ТК: {{ res[25] }}<br>
+            Номер ТК: {{ res[26] }}<br>
+            Тип ТК: {{ res[28] }}<br>
+            Комментарий: {{ res[27] }}<br>
+        </td>
+        <td>{{ res[18] }}</td>
+        <td>{{ res[19] }}</td>
+        <td>{{ res[20] }}</td>
+        <td>{{ res[21] }}</td>
+        <td>{{ res[22] }}</td>
+        <td>{{ res[23] }}</td>
+        <td>{{ res[24] }}</td>
+    </tr>
+{% endfor %}
+</tbody>

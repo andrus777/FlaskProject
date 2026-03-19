@@ -1,28 +1,29 @@
 <div class="container-fluid">
-            <h1>Остатки на складе?</h1>
+            <h1>Все актуальные заказы</h1>
 
 <!-- Первая таблица -->
  <div>
-     <table id="exTable"  class="display table-hover row-border">
+     <table id="ordersTable"  class="display">
          <thead>
          <tr>
-             <th>КодПроекта</th>
-             <th>Номер</th>
-             <th>Дата</th>
-             <th>ГруппаПроектов</th>
              <th>Проект</th>
-             <th>СтатусЗаказа</th>
-             <th>Комментарий</th>
+             <th>БизнесРегион</th>
              <th>Менеджер</th>
              <th>Партнер</th>
-             <th>Артикул</th>
-             <th>Номенклатура</th>
+             <th>Номер</th>
+             <th>Дата</th>
+             <th>СтатусЗаказа</th>
+             <th>Соглашение</th>
              <th>Количество</th>
-             <th>Цена</th>
-             <th>СуммаСНДС</th>
-             <th>ВариантОбеспечения</th>
-             <th>БизнесРегион</th>
-             <th>ОтвМенеджер</th>
+             <th>КоличествоРеал</th>
+             <th>СуммаРеал</th>
+             <th>Соглашение</th>
+             <th>Количество</th>
+             <th>КоличествоРеал</th>
+             <th>ДатаРеализации</th>
+             <th>ДокументРеализации</th>
+             <th>Сумма_платежа</th>
+             <th>ДатаПлатежа</th>
          </tr>
          </thead>
          <tbody>
@@ -37,14 +38,15 @@
         <td>{{ res[6] }}</td>
         <td>{{ res[7] }}</td>
         <td>{{ res[9] }}</td>
+        <td>{{ res[10] }}</td>
         <td>{{ res[11] }}</td>
         <td>{{ res[12] }}</td>
         <td>{{ res[13] }}</td>
         <td>{{ res[14] }}</td>
         <td>{{ res[15] }}</td>
-        <td>{{ res[19] }}</td>
-        <td>{{ res[23] }}</td>
-        <td>{{ res[24] }}</td>
+        <td>{{ res[16] }}</td>
+        <td>{{ res[17] }}</td>
+        <td>{{ res[18] }}</td>
      </tr>
  {% endfor %}
          </tbody>

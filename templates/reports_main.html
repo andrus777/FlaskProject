@@ -1,6 +1,6 @@
 {% extends 'base_new.html' %}
 
-{% block title %}Склад{% endblock %}
+{% block title %}Отчеты{% endblock %}
 
 {% block content %}
     <!-- Блок 2: слева — боковое меню, справа — контент (фиксирован под заголовком) -->
@@ -8,13 +8,12 @@
     <!-- Левое меню -->
     <aside class="sidebar" id="sidebar" aria-label="Левое боковое меню">
         <div class="p-3">
-            <h4 class="text-muted">ЗАКАЗЫ</h4>
+            <h4 class="text-muted">EIS</h4>
             <nav class="nav flex-column">
-                <a class="nav-link" href="#" onclick="sendRequest('/demands/about', '#mainContent')">О системе</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/demands/dem', '#mainContent')">Заказы (все)</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/demands/provision', '#mainContent')">Обеспечение</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/demands/ststistic', '#mainContent')">Статистика</a>
-                <a class="nav-link" href="#" onclick="sendRequest('/demands/processing', '#mainContent')">Обработка</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/reports/about', '#mainContent','')">О системе</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/reports/dashboard', '#mainContent','')">Информационная доска</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/reports/shipments', '#mainContent','')">Отгрузки</a>
+                <a class="nav-link" href="#" onclick="sendRequest('/reports/printing', '#mainContent','')">Печать</a>
             </nav>
             <hr />
             <!--
@@ -22,20 +21,19 @@
             -->
         </div>
     </aside>
-
     <!-- Контент -->
     <main class="content" id="mainContent" tabindex="0" role="main">
-        <div class="container-fluid">
+<div class="container-fluid">
 <div id="storecontent">
                 <h1>Информационная система коммерческой службы</h1>
-                <p class="lead">Раздел ЗАКАЗЫ - сведения о заказах</p>
+                <p class="lead">Равздел Отчеты - всевозможные отчеты и индикаторы</p>
 
                 <p class="lead">Краткое описание пунктов меню:</p>
                 <ul>
-                  <li><b>Заказы:</b> все заказы из 1С</li>
-                  <li><b>Обеспечение заказов:</b> сведения об обеспеченности заказов с учетом изданий без резерва, с указанием прогноза и учета в текущем производстве</li>
-                  <li><b>Статистика заказов:</b> статистика по неотгруженным заказам</li>
-                  <li><b>Обработка заказа:</b> обработка загруженного заказа или отдельных позиций на предмет обеспечения</li>
+                  <li>О системе: краткое описание функционала блока</li>
+                  <li>Информационная доска: оперативные сведения, отображенные с помощью индикаторов и графиков </li>
+                  <li>Отгрузки: отчет по продажам внешним контрагентам</li>
+                  <li>Печать: отчет по позициям в печати текущего года</li>
                 </ul>
 
                 <br>
@@ -59,6 +57,4 @@
 </div>
     </main>
 </div>
-
-
 {% endblock %}
