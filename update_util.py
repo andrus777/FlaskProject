@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
+
 from brom import БромКлиент
 from httplib2.auth import params
 from sqlalchemy import create_engine, update, table, column, func
@@ -28,6 +29,8 @@ def update_sys_data(tbname):
         )
         conn.execute(stmt)
 
+
+
 def start_update_tbl(table_name):
     result = -1
 
@@ -51,6 +54,58 @@ def start_update_tbl(table_name):
                 ГДЕ ТоварыНаСкладахОстатки.Склад.Наименование = "ИЦ Академия"
         """
         fields = ["КодПроекта", "Артикул", "Номенклатура", "ГодИздания", "В_наличии", "В_резерве", "В_отгрузке"]
+        data = getOne(txt_sql, fields)
+        print(data)
+        df = pd.DataFrame(data)
+
+        # Создаём engine для подключения к MySQL
+        engine = create_engine("mysql+pymysql://master_logist:!StE1q2w3e2w1q@192.168.2.228:3306/sppr")
+
+        # Загружаем данные в таблицу
+        df.to_sql(table_name, con=engine, if_exists='replace', index=False)
+        df.to_sql(
+            name=f"{table_name}",  # Название таблицы в БД
+            con=engine,  # Движок подключения
+            if_exists="replace",  # Действия, если таблица существует:
+            #   - "fail" — ошибка
+            #   - "replace" — перезаписать
+            #   - "append" — добавить строки
+            index=False,  # Не сохранять индекс DataFrame
+            method="multi",  # Оптимизация: множественная вставка
+            chunksize=1000  # Размер пакета (для больших данных)
+        )
+        # Закрываем соединение
+        engine.dispose()
+        print("Данные из 1С загружены")
+        update_sys_data(table_name)
+        result = 1
+
+    if table_name == "src_cash_today":
+        print('Соответствие таблице MySQL: ', table_name)
+        # Создаём DataFrame
+        today = datetime.today()
+        day = today.day
+        month = today.month
+
+        print(f"День: {day}, Месяц: {month}")
+        txt_sql = f"""
+            ВЫБРАТЬ
+                ДенежныеСредстваБезналичные.БанковскийСчет КАК БанковскийСчет,
+                ДенежныеСредстваБезналичные.Организация КАК Организация,
+                ДенежныеСредстваБезналичные.Сумма КАК Сумма,
+                ДенежныеСредстваБезналичные.Период КАК Период,
+                ДенежныеСредстваБезналичные.ВидДвижения КАК ВидДвижения,
+                ДенежныеСредстваБезналичные.Регистратор.Номер КАК РегистраторНомер,
+                ДенежныеСредстваБезналичные.Регистратор.Проведен КАК РегистраторПроведен,
+                ДенежныеСредстваБезналичные.Регистратор.Дата КАК РегистраторДата,
+                ЕСТЬNULL(ДенежныеСредстваБезналичные.АналитикаУчетаПоПартнерам.Наименование, "-") КАК Партнер
+            ИЗ
+                РегистрНакопления.ДенежныеСредстваБезналичные КАК ДенежныеСредстваБезналичные
+            ГДЕ
+                ДенежныеСредстваБезналичные.Период МЕЖДУ ДАТАВРЕМЯ(2026, 1, 1, 0, 0, 0) И ДАТАВРЕМЯ(2026, {month}, {day}, 0, 0, 0) 
+        """
+
+        fields = ["РегистраторДата", "Партнер", "Период", "Сумма"]
         data = getOne(txt_sql, fields)
         print(data)
         df = pd.DataFrame(data)

@@ -40,6 +40,11 @@ function sendRequest(url, sect, dataSend = '') {
                 //alert("test");
                 initDemHandlers();
             }
+            if (url == "/reports/dashboard") {
+                //alert("test");
+                initVigHandlers();
+                initCanvas();
+            }
             if (url == "/eis/inprod") {
                 initInProdHandlers();
             }
@@ -162,6 +167,19 @@ function initDemHandlers() {
     });
 }
 
+function initVigHandlers() {
+    $('#vigTable').DataTable({
+        autoWidth: true,
+        paging: true,
+        ordering: true,
+        info: false,
+        searching: false,
+        lengthChange: false,
+        language: {
+            url: '/static/ru.json'
+        }
+    });
+}
 
 function format(data) {
     return '<div>Детали заказа: ' + data.Номер + '</div>';

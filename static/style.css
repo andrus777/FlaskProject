@@ -84,7 +84,14 @@
 }
 
 .table-wrapper-eis {
- max-height: 400px;
+ max-height: 600px;
+ overflow-y: auto;
+ border: 1px solid #dee2e6;
+ border-radius: 0.3rem;
+}
+
+.table-wrapper-vig {
+ max-height: 200px;
  overflow-y: auto;
  border: 1px solid #dee2e6;
  border-radius: 0.3rem;

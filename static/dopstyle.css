@@ -5662,4 +5662,56 @@ h1 {
   padding: 20px;
 }
 
+.container {
+    width: 850px;
+    height: 750px;
+    margin: 10px auto;
+    background-color: rgba(182, 205, 243, 0.96);
+    padding: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    transform: scale(0.9);
+}
 
+.header-vig {
+    text-align: left;
+    padding: 10px 0;
+    margin: 10px;
+    color: #06167d;
+}
+
+h1, h2 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.today-info {
+    padding: 10px;
+    color: #1a44e3;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+canvas {
+    display: block;
+    margin: 10px auto;
+    border: 1px solid #fff;
+}
+
+.parent {
+  position: relative; /* Обязательное условие для привязки потомка */
+  /* остальные стили родителя */
+}
+
+.child {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}

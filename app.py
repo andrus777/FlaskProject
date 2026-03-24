@@ -285,7 +285,46 @@ def reports(reptag):
     print("Код в url: ", reptag)
     if reptag == "about":
         return render_template('reports_about.html')
+
     elif reptag == "dashboard":
+        start_update_tbl('src_cash_today')
+
+        con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
+                                  database='sppr')
+        cursor = con.cursor()
+        sql_txt = """select 
+                        DATE_FORMAT(РегистраторДата, '%d.%m.%Y') AS ДатаПлатежа, 
+                        Партнер,
+                        FORMAT(Сумма, 2, 'ru_RU') AS Сумма,
+                        FORMAT(SUM(Сумма) OVER (), 2, 'ru_RU') AS total_price
+                        from sppr.src_cash_today
+                        where DATE_FORMAT(РегистраторДата, '%d.%m.%Y') = DATE_FORMAT((SELECT MAX(РегистраторДата) FROM sppr.src_cash_today), '%d.%m.%Y');
+                    """
+
+        cursor.execute(sql_txt)
+        results_today = cursor.fetchall()
+
+        sql_txt = """select 
+                        DATE_FORMAT(РегистраторДата, '%m') AS МесяцПлатежа,
+                        DATE_FORMAT(РегистраторДата, '%Y') AS ГодПлатежа,
+                        CAST(ROUND(SUM(Сумма), 2) AS DECIMAL(20,2)) AS СуммаПлатежа,
+                        FORMAT(SUM(SUM(Сумма)) OVER (), 2, 'ru_RU') AS total
+                        from sppr.src_cash_today
+                        group by DATE_FORMAT(РегистраторДата, '%m'), DATE_FORMAT(РегистраторДата, '%Y');
+                    """
+
+        cursor_new = con.cursor()
+        cursor_new.execute(sql_txt)
+        results_year  = cursor_new.fetchall()
+
+        cursor_new.close()
+        cursor.close()
+        con.close()
+        return render_template('reports_dashboard.html', results=results_today, additional_data=results_year)
+
+    if reptag == "about":
+        return render_template('reports_about.html')
+    elif reptag == "shipments":
 
         con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
                                   database='sppr')
@@ -302,6 +341,7 @@ def reports(reptag):
         cursor.close()
         con.close()
         return render_template('demands_dashboard.html', results=results)
+
     else:
         return render_template('reports_main.html')
 

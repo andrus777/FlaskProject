@@ -1,0 +1,51 @@
+<div class="child">
+    <h1>Индикаторы</h1>
+
+    <div class="container">
+        <div class="header-vig">
+            <h1>{% if additional_data %} {{ additional_data[0][3] }} {% else %} 0.00 {% endif %} р.</h1>
+        </div>
+        <canvas id="chart" width="800" height="400"></canvas>
+        <div class="today-info">
+            <h2>Поступления на дату
+                {% if results %} {{ results[0][0] }} {% else %} - {% endif %} : {% if results %}
+                    {{ results[0][3] }} {% else %} 0.00 {% endif %}
+            </h2>
+        </div>
+        <div style="overflow-y:auto;" class="table-wrapper-vig mb-5">
+            <table id="vigTable" class="display table-hover row-border table-bordered table-sticky">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 300px;">Контрагент</th>
+                    <th style="width: 200px;">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for res in results %}
+                    <tr>
+                        <td>{{ res[1] }}</td>
+                        <td>{{ res[2] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Здесь будет JavaScript с данными из Flask -->
+    <script>
+        // Преобразуем данные из Flask в JSON и сохраняем в JS-переменную
+        const jsArray = {{ additional_data|tojson|safe }};
+
+        // Теперь можно работать с jsArray как с обычным JS-массивом
+        console.log(jsArray); // Выведет массив в консоль
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
