@@ -1,3 +1,4 @@
+
 // Функция для отправки запроса
 function sendRequest(url, sect, dataSend = '') {
     const dataToSend = {"tbname": dataSend.toString()};
@@ -44,6 +45,11 @@ function sendRequest(url, sect, dataSend = '') {
                 //alert("test");
                 initVigHandlers();
                 initCanvas();
+            }
+            if (url == "/reports/shipments") {
+                //alert("test");
+                initVigHandlers();
+                initShipmentsCanvas();
             }
             if (url == "/eis/inprod") {
                 initInProdHandlers();
@@ -121,48 +127,64 @@ function initInProdHandlers() {
 
 }
 
-
+var tableDem;
 function initDemHandlers() {
-    const table = $('#ordersTable').DataTable({
+    tableDem = $('#ordersTable').DataTable({
         columns: [
             {data: 'Проект'},
             {data: 'БизнесРегион'},
             {data: 'Менеджер'},
             {data: 'Партнер'},
             {data: 'Номер'},
-            {data: 'Дата'},
+            {data: 'ДатаЗаказа'},
             {data: 'СтатусЗаказа'},
             {data: 'Соглашение'},
             {data: 'Количество'},
+            {data: 'СуммаСНДС'},
             {data: 'КоличествоРеал'},
             {data: 'СуммаРеал'},
-            {data: 'Соглашение'},
-            {data: 'Количество'},
-            {data: 'КоличествоРеал'},
             {data: 'ДатаРеализации'},
             {data: 'ДокументРеализации'},
             {data: 'Сумма_платежа'},
             {data: 'ДатаПлатежа'}
         ],
         rowGroup: {
-            dataSrc: 'Проект', // начальная группировка
+            dataSrc: 'Проект',
             startRender: function (rows, group) {
                 const collapsed = $('<span>▶</span>')
-                    .css('cursor', 'pointer')
+                    .css({
+                        'cursor': 'pointer',
+                        'margin-right': '8px',
+                        'font-weight': 'bold'
+                    })
                     .on('click', function () {
+                        const isShown = tableDem.row(rows[0]).child.isShown();
                         rows.nodes().each(function (r) {
-                            table.row(r).child.isShown() ?
-                                table.row(r).child.hide() :
-                                table.row(r).child(format(r.data())).show();
-                        });
-                        $(this).text(table.row(rows[0]).child.isShown() ? '▼' : '▶');
-                    });
-                return $('<tr/>')
-                    .append($('<td/>').attr('colspan', 5).append(collapsed).append(' ' + group));
+                            if (isShown) {
+                                tableDem.row(r).child.hide();
+                } else {
+                    tableDem.row(r).child(format(r.data())).show();
+                    console.log(r);
+                    console.log(typeof r.data); // должен быть 'function'
+                }
+            });
+            $(this).text(isShown ? '▼' : '▶');
+        });
+
+        return $('<tr/>')
+            .append($('<td/>')
+                .attr('colspan', 15) // colspan должен охватывать все колонки
+                .css({
+                    'background-color': '#f8f9fa',
+                    'font-weight': 'bold',
+                    'padding': '8px'
+                })
+                .append(collapsed)
+                .append(' Проект: ' + group));
             }
         },
         pageLength: 50,
-        responsive: true,
+        responsive: false, // временно отключите для теста
         language: {url: '/static/ru.json'}
     });
 }
@@ -207,7 +229,7 @@ function initAdditionalHandlers() {
 
     });
 
-    var stable = $('#selectedTable').DataTable({
+    $('#selectedTable').DataTable({
         pageLength: 25,
         paging: true,
         ordering: true,
@@ -217,9 +239,10 @@ function initAdditionalHandlers() {
             url: '/static/ru.json'
         },
         columnDefs: [
-            {width: '30px', targets: 0}, // Первый столбец — 150 px
-            {width: '200px', targets: 1}, // Второй столбец — 200 px
-            {width: '200px', targets: 11}
+            {targets: [1], width: '50px'},
+            {targets: [11], width: '100px'},
+            {targets: [14], width: '110px'},
+            {targets: '_all', width: 'auto'}
         ]
     });
 
@@ -335,6 +358,13 @@ function openPopupWindow(id) {
 }
 
 function openPopupWindowSale(id, year) {
+
+    sendRequest("/eis/sale/" + id, "#popup-content", year)
+    initPopUp();
+    popup.classList.add('active');
+}
+
+function openPopupWindowShipments(month, year) {
 
     sendRequest("/eis/sale/" + id, "#popup-content", year)
     initPopUp();

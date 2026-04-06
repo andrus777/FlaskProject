@@ -1,58 +1,150 @@
-<h1>Отгрузки</h1>
+<div class="child">
+    <h1>Отгрузки</h1>
 
-<!-- Первая таблица -->
-<div class="table-wrapper mb-4">
-    <table id="storeTable" class="display table-hover row-border table-striped table-bordered table-sticky">
-        <thead class="thead-dark">
-        <tr>
-            <th>КодПроекта</th>
-            <th>Артикул</th>
-            <th>ISBN</th>
-            <th>Автор</th>
-            <th>Наименование</th>
-            <th>Год</th>
-            <th>Статус</th>
-            <th>Стандарт пачки</th>
-            <th>Место хранения</th>
-            <th>В наличии</th>
-            <th>В резерве</th>
-            <th>В отгрузке</th>
-            <th>Доступно</th>
-            <th>Дата поступления</th>
-            <th>Тираж</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for res in results %}
-            <tr>
-                <td>{{ res[0] }}</td>
-                <td>{{ res[1] }}</td>
-                <td>{{ res[2] }}</td>
-                <td>{{ res[3] }}</td>
-                <td>{{ res[4] }}</td>
-                <td>{{ res[5] }}</td>
-                <td>{{ res[6] }}</td>
-                <td>{{ res[7] }}</td>
-                <td>{{ res[8] }}</td>
-                <td style="font-weight: bold; color: blue;">
-                    {{ res[9] }}
-                </td>
-                <td style="font-weight: bold; color: blue;">
-                    <a href="#" onclick="openPopupWindow({{ res[1] }});">{{ res[10] }}</a>
-                </td>
-                <td style="font-weight: bold; color: blue;">
-                    {{ res[11] }}
-                </td>
-                <td style="font-weight: bold; color: blue;">
-                    {{ res[12] }}
-                </td>
-                <td>{{ res[13] }}</td>
-                <td>{{ res[14] }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-sh">
+        <div class="header-vig">
+            <h1>Отгружено в 2025 : {% if results %} {{ results[0][5] }} {% else %} 0.00 {% endif %} р.</h1>
+        </div>
+        <div>
+            <canvas id="myDashboard1" width="800" height="400"></canvas>
+        </div>
+        <div class="today-info">
+            <h1>Отгружено в 2026 : {% if results %} {{ results[12][5] }} {% else %} 0.00 {% endif %} р.</h1>
+        </div>
+        <div>
+            <canvas id="myDashboard2" width="800" height="400"></canvas>
+        </div>
+    </div>
+    <!-- Здесь будет JavaScript с данными из Flask -->
+    <script>
+        // Преобразуем данные из Flask в JSON и сохраняем в JS-переменную
+        const jsArraySh = {{ results|tojson|safe }};
+
+        // Теперь можно работать с jsArray как с обычным JS-массивом
+        console.log(jsArraySh); // Выведет массив в консоль
+
+
+        function getMonthNumber(monthName) {
+            const monthMap = {
+                'Янв': 1, 'Фев': 2, 'Мар': 3, 'Апр': 4,
+                'Май': 5, 'Июн': 6, 'Июл': 7, 'Авг': 8,
+                'Сен': 9, 'Окт': 10, 'Ноя': 11, 'Дек': 12
+            };
+            return monthMap[monthName] || null; // возвращает номер месяца или null, если не найден
+        }
+
+        function getMonthName(monthNumber) {
+            const monthMap = {
+                1: 'Янв', 2: 'Фев', 3: 'Мар', 4: 'Апр',
+                5: 'Май', 6: 'Июн', 7: 'Июл', 8: 'Авг',
+                9: 'Сен', 10: 'Окт', 11: 'Ноя', 12: 'Дек'
+            };
+            return monthMap[monthNumber] || null; // возвращает название месяца или null, если не найден
+        }
+
+
+        // Данные для диаграммы 1
+        const chartData1 = {
+            'Янв': 0,
+            'Фев': 0,
+            'Мар': 0,
+            'Апр': 0,
+            'Май': 0,
+            'Июн': 0,
+            'Июл': 0,
+            'Авг': 0,
+            'Сен': 0,
+            'Окт': 0,
+            'Ноя': 0,
+            'Дек': 0
+        };
+        // Данные для диаграммы 2
+        const chartData2 = {
+            'Янв': 0,
+            'Фев': 0,
+            'Мар': 0,
+            'Апр': 0,
+            'Май': 0,
+            'Июн': 0,
+            'Июл': 0,
+            'Авг': 0,
+            'Сен': 0,
+            'Окт': 0,
+            'Ноя': 0,
+            'Дек': 0
+        };
+        // Обработка переданного json массива вида {"2025","1","262","369554.52","686635","779 737 086,95"} {Год, Месяц, Единицы, Сумма, Единица_за_год, Сумма_за_год}
+        jsArraySh.forEach(item => {
+            if (item[0] == '2025') {
+                //const monthIndex = item[1] * 1 - 1; // Преобразуем 1–12 в 0–11
+
+                monthName = getMonthName(item[1] * 1);
+                chartData1[monthName] = item[3];
+                //if (monthName == 'Янв') {
+                //    chartData1[monthName] = 40000000.10;
+                //}
+            }
+            if (item[0] == '2026') {
+                //const monthIndex = item[1] * 1 - 1; // Преобразуем 1–12 в 0–11
+                monthName = getMonthName(item[1] * 1);
+                chartData2[monthName] = item[3];
+            }
+            // alert(item[1] + "__" + monthName + "__" + chartData1[monthName]);
+        });
+
+
+        // Получаем элемент канвы
+        const canvas1 = document.getElementById('myDashboard1');
+
+        // Создаём экземпляр дашборда
+        const dashboard1 = new Dashboard({
+            canvas: canvas1,
+            width: 800,
+            height: 400,
+            canvasColor: '#f9f9f9',
+            barColor: '#396cd4',
+            hoverColor: '#91acf1',
+            data: chartData1,
+            padding: 80,
+            barWidth: 40,
+            gap: 10,
+            onBarClick: (month, value) => {
+                alert(`Вы кликнули на столбец: ${month}, значение: ${value}`);
+            }
+        });
+
+        const canvas2 = document.getElementById('myDashboard2');
+
+        // Создаём экземпляр дашборда
+        const dashboard2 = new Dashboard({
+            canvas: canvas2,
+            width: 800,
+            height: 400,
+            canvasColor: '#f9f9f9',
+            barColor: '#396cd4',
+            hoverColor: '#91acf1',
+            data: chartData2,
+            padding: 80,
+            barWidth: 40,
+            gap: 10,
+            onBarClick: (month, value) => {
+                alert(`Вы кликнули на столбец: ${month}, значение: ${value}`);
+
+            }
+        });
+
+        // Отрисовываем дашборд
+        dashboard1.draw();
+        dashboard2.draw();
+
+    </script>
+
 </div>
+
+
+
+
+
 
 
 

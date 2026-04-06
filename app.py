@@ -270,7 +270,7 @@ def demands(demtag):
                 from sppr.view_all_demands where ГодРеализации <> 2025 and (СтатусЗаказа <> "НЕ учитывать" and СтатусЗаказа <> "Отменен")
                 order by Проект, БизнесРегион, Менеджер
         """
-        print(sql_txt)
+        #print(sql_txt)
         cursor.execute(sql_txt)
         results = cursor.fetchall()
 
@@ -322,25 +322,56 @@ def reports(reptag):
         con.close()
         return render_template('reports_dashboard.html', results=results_today, additional_data=results_year)
 
-    if reptag == "about":
-        return render_template('reports_about.html')
     elif reptag == "shipments":
+        start_update_tbl('src_demands_gr')
 
         con = mysql.connector.connect(host='192.168.2.228', user='master_logist', password='!StE1q2w3e2w1q',
-                                  database='sppr')
+                                      database='sppr')
         cursor = con.cursor()
-        sql_txt = """
-                select *
-                from sppr.view_all_demands where ГодРеализации <> 2025 and (СтатусЗаказа <> "НЕ учитывать" and СтатусЗаказа <> "Отменен")
-                order by Проект, БизнесРегион, Менеджер;
-        """
-        print(sql_txt)
+        sql_txt = "select  Год, Месяц, КоличествоПоМесяцу, СуммаПоМесяцу, КоличествоПоГоду, FORMAT(СуммаПоГоду, 2, 'ru_RU') AS СуммаПоГоду from sppr.src_demands_gr order by Год, Месяц;"
+
         cursor.execute(sql_txt)
-        results = cursor.fetchall()
+        results_today = cursor.fetchall()
 
         cursor.close()
         con.close()
-        return render_template('demands_dashboard.html', results=results)
+        return render_template('reports_shipments.html', results=results_today)
+
+    elif reptag == "sh":
+        results = ""
+        # 1. Получаем JSON из запроса
+        data = request.get_json()
+        print('data: ', data)
+        if len(data['tbname']) > 1:
+            id = data['tbname']
+            print(f"Артикула: {id}")
+
+            # Создаём DataFrame
+            txt_sql = f"""
+                                     ВЫБРАТЬ
+                                        ЗапасыИПотребностиОстатки.Номенклатура.Артикул КАК Артикул,
+                                        ЗапасыИПотребностиОстатки.Номенклатура.Наименование КАК Номенклатура,
+                                        ЦЕЛ(ЗапасыИПотребностиОстатки.РезервироватьНаСкладеОстаток) КАК Резерв,
+                                        ЗапасыИПотребностиОстатки.Заказ.Номер КАК ЗаказНомер, 
+                                        ЗапасыИПотребностиОстатки.Заказ.Дата КАК ЗаказДата,
+                                        ЗапасыИПотребностиОстатки.Заказ.Партнер.Наименование КАК Партнер,
+                                        ЗапасыИПотребностиОстатки.Заказ.Менеджер.Наименование КАК Менеджер
+                                    ИЗ
+                                        РегистрНакопления.ЗапасыИПотребности.Остатки КАК ЗапасыИПотребностиОстатки
+                                    ГДЕ
+                                        ЗапасыИПотребностиОстатки.Склад.Наименование = "ИЦ Академия"
+                                        И
+                                        СокрЛп(ЗапасыИПотребностиОстатки.Номенклатура.Артикул) = "{id}"
+                                """
+            fields = ["Артикул", "Номенклатура", "Резерв", "ЗаказНомер", "ЗаказДата", "Партнер", "Менеджер"]
+            data = getOne(txt_sql, fields)
+            # print(data)
+            # results = pd.DataFrame(data)
+            results = [[row[field] for field in fields] for row in data]
+            print("Данные из 1С загружены")
+            print(results)
+
+        return render_template('eis_rezerv.html', results=results)
 
     else:
         return render_template('reports_main.html')

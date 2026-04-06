@@ -5670,7 +5670,17 @@ h1 {
     padding: 10px;
     border-radius: 12px;
     overflow: hidden;
-    transform: scale(0.9);
+
+}
+.container-sh {
+    width: 850px;
+    height: 1000px;
+    margin: 10px auto;
+    background-color: rgba(182, 205, 243, 0.96);
+    padding: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+
 }
 
 .header-vig {
@@ -5714,4 +5724,24 @@ canvas {
   position: absolute;
   top: 5px;
   left: 5px;
+}
+
+/* Убедитесь, что нет неожиданных стилей */
+#myDashboard1 {
+    width: 800px;
+    height: 400px;
+    border: 1px solid black; /* Для визуального контроля */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Убедитесь, что нет неожиданных стилей */
+#myDashboard2 {
+    width: 800px;
+    height: 400px;
+    border: 1px solid black; /* Для визуального контроля */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
